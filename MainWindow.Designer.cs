@@ -32,10 +32,15 @@
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnPID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.buttonExport = new System.Windows.Forms.Button();
-            this.buttonKillProc = new System.Windows.Forms.Button();
-            this.checkBoxStart = new System.Windows.Forms.CheckBox();
             this.columnMemory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonExport = new System.Windows.Forms.Button();
+            this.checkBoxStart = new System.Windows.Forms.CheckBox();
+            this.labelTotal = new System.Windows.Forms.Label();
+            this.labelTotalNr = new System.Windows.Forms.Label();
+            this.comboBoxKillProcess = new System.Windows.Forms.ComboBox();
+            this.textBoxKillProcess = new System.Windows.Forms.TextBox();
+            this.buttonKillProcess = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listViewRunnProc
@@ -45,9 +50,10 @@
             this.columnPID,
             this.columnStatus,
             this.columnMemory});
-            this.listViewRunnProc.Location = new System.Drawing.Point(12, 77);
+            this.listViewRunnProc.FullRowSelect = true;
+            this.listViewRunnProc.Location = new System.Drawing.Point(12, 101);
             this.listViewRunnProc.Name = "listViewRunnProc";
-            this.listViewRunnProc.Size = new System.Drawing.Size(454, 394);
+            this.listViewRunnProc.Size = new System.Drawing.Size(371, 385);
             this.listViewRunnProc.TabIndex = 0;
             this.listViewRunnProc.UseCompatibleStateImageBehavior = false;
             this.listViewRunnProc.View = System.Windows.Forms.View.Details;
@@ -67,28 +73,24 @@
             this.columnStatus.Text = "Status";
             this.columnStatus.Width = 88;
             // 
+            // columnMemory
+            // 
+            this.columnMemory.Text = "Memory MB";
+            this.columnMemory.Width = 83;
+            // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(12, 13);
+            this.buttonExport.Location = new System.Drawing.Point(308, 13);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(75, 23);
             this.buttonExport.TabIndex = 2;
             this.buttonExport.Text = "Export";
             this.buttonExport.UseVisualStyleBackColor = true;
             // 
-            // buttonKillProc
-            // 
-            this.buttonKillProc.Location = new System.Drawing.Point(105, 13);
-            this.buttonKillProc.Name = "buttonKillProc";
-            this.buttonKillProc.Size = new System.Drawing.Size(75, 23);
-            this.buttonKillProc.TabIndex = 3;
-            this.buttonKillProc.Text = "Kill process";
-            this.buttonKillProc.UseVisualStyleBackColor = true;
-            // 
             // checkBoxStart
             // 
             this.checkBoxStart.AutoSize = true;
-            this.checkBoxStart.Location = new System.Drawing.Point(12, 54);
+            this.checkBoxStart.Location = new System.Drawing.Point(12, 78);
             this.checkBoxStart.Name = "checkBoxStart";
             this.checkBoxStart.Size = new System.Drawing.Size(93, 17);
             this.checkBoxStart.TabIndex = 4;
@@ -96,18 +98,76 @@
             this.checkBoxStart.UseVisualStyleBackColor = true;
             this.checkBoxStart.CheckedChanged += new System.EventHandler(this.checkBoxStart_CheckedChanged);
             // 
-            // columnMemory
+            // labelTotal
             // 
-            this.columnMemory.Text = "Memory MB";
-            this.columnMemory.Width = 83;
+            this.labelTotal.AutoSize = true;
+            this.labelTotal.Location = new System.Drawing.Point(328, 79);
+            this.labelTotal.Name = "labelTotal";
+            this.labelTotal.Size = new System.Drawing.Size(34, 13);
+            this.labelTotal.TabIndex = 5;
+            this.labelTotal.Text = "Total:";
+            this.labelTotal.Visible = false;
+            // 
+            // labelTotalNr
+            // 
+            this.labelTotalNr.AutoSize = true;
+            this.labelTotalNr.Location = new System.Drawing.Point(362, 79);
+            this.labelTotalNr.Name = "labelTotalNr";
+            this.labelTotalNr.Size = new System.Drawing.Size(13, 13);
+            this.labelTotalNr.TabIndex = 6;
+            this.labelTotalNr.Text = "0";
+            this.labelTotalNr.Visible = false;
+            // 
+            // comboBoxKillProcess
+            // 
+            this.comboBoxKillProcess.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxKillProcess.FormattingEnabled = true;
+            this.comboBoxKillProcess.Items.AddRange(new object[] {
+            "Name",
+            "PID"});
+            this.comboBoxKillProcess.Location = new System.Drawing.Point(107, 13);
+            this.comboBoxKillProcess.Name = "comboBoxKillProcess";
+            this.comboBoxKillProcess.Size = new System.Drawing.Size(75, 21);
+            this.comboBoxKillProcess.TabIndex = 8;
+            // 
+            // textBoxKillProcess
+            // 
+            this.textBoxKillProcess.Location = new System.Drawing.Point(12, 39);
+            this.textBoxKillProcess.Name = "textBoxKillProcess";
+            this.textBoxKillProcess.Size = new System.Drawing.Size(170, 20);
+            this.textBoxKillProcess.TabIndex = 9;
+            // 
+            // buttonKillProcess
+            // 
+            this.buttonKillProcess.Location = new System.Drawing.Point(11, 12);
+            this.buttonKillProcess.Name = "buttonKillProcess";
+            this.buttonKillProcess.Size = new System.Drawing.Size(74, 23);
+            this.buttonKillProcess.TabIndex = 10;
+            this.buttonKillProcess.Text = "Kill process";
+            this.buttonKillProcess.UseVisualStyleBackColor = true;
+            this.buttonKillProcess.Click += new System.EventHandler(this.buttonKillProcess_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(87, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(18, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "by";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 483);
+            this.ClientSize = new System.Drawing.Size(397, 498);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.buttonKillProcess);
+            this.Controls.Add(this.textBoxKillProcess);
+            this.Controls.Add(this.comboBoxKillProcess);
+            this.Controls.Add(this.labelTotalNr);
+            this.Controls.Add(this.labelTotal);
             this.Controls.Add(this.checkBoxStart);
-            this.Controls.Add(this.buttonKillProc);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.listViewRunnProc);
             this.Name = "MainWindow";
@@ -121,12 +181,17 @@
 
         private System.Windows.Forms.ListView listViewRunnProc;
         private System.Windows.Forms.Button buttonExport;
-        private System.Windows.Forms.Button buttonKillProc;
         private System.Windows.Forms.ColumnHeader columnName;
         private System.Windows.Forms.ColumnHeader columnPID;
         private System.Windows.Forms.ColumnHeader columnStatus;
         private System.Windows.Forms.CheckBox checkBoxStart;
         private System.Windows.Forms.ColumnHeader columnMemory;
+        private System.Windows.Forms.Label labelTotal;
+        private System.Windows.Forms.Label labelTotalNr;
+        private System.Windows.Forms.ComboBox comboBoxKillProcess;
+        private System.Windows.Forms.TextBox textBoxKillProcess;
+        private System.Windows.Forms.Button buttonKillProcess;
+        private System.Windows.Forms.Label label1;
     }
 }
 
