@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Diagnostics;
 
 namespace ProcessList
 {
@@ -24,11 +25,15 @@ namespace ProcessList
             {
                 // Start second thread
                 Thread task = new Thread(AddProcInfoToList);
+                task.IsBackground = true;
                 task.Start();            
             }
             else
             {
                 listViewRunnProc.Items.Clear();
+
+                labelTotal.Hide();
+                labelTotalNr.Hide();
             }
         }
 
@@ -44,7 +49,7 @@ namespace ProcessList
 
         private void InvokeUI(Action method)
         {
-            this.BeginInvoke(new MethodInvoker(method));
+            this.Invoke(new MethodInvoker(method));
         }
         #endregion
 
@@ -52,8 +57,7 @@ namespace ProcessList
         public void UpdateListViewProcc()
         {
             List<ProcessInfo> processes = ProcessInfo.GetProcessesInfo();
-
-            
+  
             if (listViewRunnProc.Items.Count == 0)
             {
                 foreach (var proc in processes)
@@ -63,6 +67,10 @@ namespace ProcessList
                     listViewItem.SubItems.Add(proc.status.ToString());
                     listViewItem.SubItems.Add(proc.memory.ToString());
                     listViewRunnProc.Items.Add(listViewItem);
+
+                    labelTotalNr.Text = listViewRunnProc.Items.Count.ToString();
+                    labelTotal.Show();
+                    labelTotalNr.Show();
                 }
             }
             else
@@ -83,6 +91,8 @@ namespace ProcessList
                     {
                         // the process is closed, remove it from the form
                         listViewRunnProc.Items.Remove(viewItem);
+
+                        labelTotalNr.Text = listViewRunnProc.Items.Count.ToString();
                     }      
                 }
                 
@@ -99,8 +109,53 @@ namespace ProcessList
                         listViewItem.SubItems.Add(item.status.ToString());
                         listViewItem.SubItems.Add(item.memory.ToString());
                         listViewRunnProc.Items.Add(listViewItem);
+
+                        labelTotalNr.Text = listViewRunnProc.Items.Count.ToString();
                     }
                 }
+            }
+        }
+
+        private void buttonKillProcess_Click(object sender, EventArgs e)
+        {
+            if (comboBoxKillProcess.SelectedItem != null)
+            {
+                if (comboBoxKillProcess.SelectedItem == "Name")
+                {
+                    try
+                    {
+                        foreach (Process proc in Process.GetProcessesByName(textBoxKillProcess.Text))
+                        {
+                            proc.Kill();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else if (comboBoxKillProcess.SelectedItem == "PID")
+                {
+                    try
+                    {
+                        foreach (Process proc in Process.GetProcesses())
+                        {
+                            if (proc.Id == int.Parse(textBoxKillProcess.Text))
+                            {
+                                proc.Kill();
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select on which criteria to kill the process!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
