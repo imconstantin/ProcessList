@@ -9,19 +9,23 @@ namespace ProcessList
 {
     public class ProcessInfo
     {
-        public string Name;
+        public string name;
 
-        public string ProcID;
+        public int procID;
 
-        public string Status;
+        public string status;
 
-        public ProcessInfo(string _name, string _procID, string _status)
+        public double memory;
+
+        public ProcessInfo(string _name, int _procID, string _status, double _memory)
         {
-            Name = _name;
-            ProcID = _procID;
-            Status = _status;
+            name = _name;
+            procID = _procID;
+            status = _status;
+            memory = _memory;
         }
 
+        // Returns a list of ProcessInfo type with all the system processes
         public static List<ProcessInfo> GetProcessesInfo()
         {
             List<ProcessInfo> procList = new List<ProcessInfo>();
@@ -29,7 +33,9 @@ namespace ProcessList
 
             foreach (var proc in processes)
             {
-                procList.Add(new ProcessInfo(proc.ProcessName, proc.Id.ToString(), "Status"));
+                double memory = Math.Round(((proc.WorkingSet64 / 1024f) / 1024f), 2);
+                string status = proc.Responding ? "Running" : "Not responding";
+                procList.Add(new ProcessInfo(proc.ProcessName, proc.Id, status, memory));
             }
 
             return procList;
