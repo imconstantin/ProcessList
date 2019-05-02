@@ -41,6 +41,8 @@
             this.textBoxKillProcess = new System.Windows.Forms.TextBox();
             this.buttonKillProcess = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBoxExport = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // listViewRunnProc
@@ -80,12 +82,13 @@
             // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(308, 13);
+            this.buttonExport.Location = new System.Drawing.Point(223, 12);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(75, 23);
             this.buttonExport.TabIndex = 2;
             this.buttonExport.Text = "Export";
             this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // checkBoxStart
             // 
@@ -156,11 +159,34 @@
             this.label1.TabIndex = 11;
             this.label1.Text = "by";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(301, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(16, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "to";
+            // 
+            // comboBoxExport
+            // 
+            this.comboBoxExport.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxExport.FormattingEnabled = true;
+            this.comboBoxExport.Items.AddRange(new object[] {
+            "XML",
+            "JSON"});
+            this.comboBoxExport.Location = new System.Drawing.Point(318, 13);
+            this.comboBoxExport.Name = "comboBoxExport";
+            this.comboBoxExport.Size = new System.Drawing.Size(65, 21);
+            this.comboBoxExport.TabIndex = 13;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(397, 498);
+            this.Controls.Add(this.comboBoxExport);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonKillProcess);
             this.Controls.Add(this.textBoxKillProcess);
@@ -192,6 +218,8 @@
         private System.Windows.Forms.TextBox textBoxKillProcess;
         private System.Windows.Forms.Button buttonKillProcess;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBoxExport;
     }
 }
 

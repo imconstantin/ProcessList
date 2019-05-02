@@ -134,7 +134,8 @@ namespace ProcessList
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                else if (comboBoxKillProcess.SelectedItem == "PID")
+
+                if (comboBoxKillProcess.SelectedItem == "PID")
                 {
                     try
                     {
@@ -156,6 +157,37 @@ namespace ProcessList
             else
             {
                 MessageBox.Show("Please select on which criteria to kill the process!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            if (comboBoxExport.SelectedItem != null)
+            {
+                if (comboBoxExport.SelectedItem == "JSON")
+                {
+                    FolderBrowserDialog folderDlg = new FolderBrowserDialog();
+                    folderDlg.ShowNewFolderButton = true;
+
+                    DialogResult result = folderDlg.ShowDialog();
+                        
+                    if (result == DialogResult.OK)
+                    {
+                        if (ExportList.ExportToJSON(ProcessInfo.GetProcessesInfo(), folderDlg.SelectedPath))
+                        {
+                            MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }           
+                }
+
+                if (comboBoxExport.SelectedItem == "XML")
+                {
+                     // work in progress
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a type of format to export!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
