@@ -4,25 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace ProcessList
 {
     public class ProcessInfo
     {
-        public string name;
+        public string Name { get; set; }
 
-        public int procID;
+        public int ProcID { get; set; }
 
-        public string status;
+        public string Status { get; set; }
 
-        public double memory;
+        public double Memory { get; set; }
 
-        public ProcessInfo(string _name, int _procID, string _status, double _memory)
+        public ProcessInfo (string _name, int _procID, string _status, double _memory)
         {
-            name = _name;
-            procID = _procID;
-            status = _status;
-            memory = _memory;
+            Name = _name;
+            ProcID = _procID;
+            Status = _status;
+            Memory = _memory;
+        }
+
+        public ProcessInfo()
+        {
+            // Needed for XML serialization
         }
 
         // Returns a list of ProcessInfo type with all the system processes

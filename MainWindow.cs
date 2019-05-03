@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace ProcessList
 {
@@ -26,32 +27,43 @@ namespace ProcessList
                 // Start second thread
                 Thread task = new Thread(AddProcInfoToList);
                 task.IsBackground = true;
-                task.Start();            
+                task.Start();
+
+                // Enable UI
+                buttonKillProcess.Enabled = true;
+                buttonExport.Enabled = true;
+                label1.Enabled = true;
+                label2.Enabled = true;
+                comboBoxExport.Enabled = true;
+                comboBoxKillProcess.Enabled = true;
+                textBoxKillProcess.Enabled = true;
             }
             else
             {
                 listViewRunnProc.Items.Clear();
-
                 labelTotal.Hide();
                 labelTotalNr.Hide();
+
+                // Disable UI
+                buttonKillProcess.Enabled = false;
+                buttonExport.Enabled = false;
+                label1.Enabled = false;
+                label2.Enabled = false;
+                comboBoxExport.Enabled = false;
+                comboBoxKillProcess.Enabled = false;
+                textBoxKillProcess.Enabled = false;
             }
         }
 
-        #region Loop at 1 sec and call the update method
+        // Loop at 1 sec and call the update method
         public void AddProcInfoToList()
         {
             while (checkBoxStart.Checked == true)
             {
-                InvokeUI(UpdateListViewProcc);
+                this.Invoke(new MethodInvoker(UpdateListViewProcc));
                 Thread.Sleep(1000);
             }
         }
-
-        private void InvokeUI(Action method)
-        {
-            this.Invoke(new MethodInvoker(method));
-        }
-        #endregion
 
         // Update the form with processes information
         public void UpdateListViewProcc()
@@ -62,10 +74,10 @@ namespace ProcessList
             {
                 foreach (var proc in processes)
                 {
-                    ListViewItem listViewItem = new ListViewItem(proc.name);
-                    listViewItem.SubItems.Add(proc.procID.ToString());
-                    listViewItem.SubItems.Add(proc.status.ToString());
-                    listViewItem.SubItems.Add(proc.memory.ToString());
+                    ListViewItem listViewItem = new ListViewItem(proc.Name);
+                    listViewItem.SubItems.Add(proc.ProcID.ToString());
+                    listViewItem.SubItems.Add(proc.Status.ToString());
+                    listViewItem.SubItems.Add(proc.Memory.ToString());
                     listViewRunnProc.Items.Add(listViewItem);
 
                     labelTotalNr.Text = listViewRunnProc.Items.Count.ToString();
@@ -77,15 +89,15 @@ namespace ProcessList
             {
                 foreach (ListViewItem viewItem in listViewRunnProc.Items)
                 {
-                    ProcessInfo matchProcess = processes.Find(x => x.procID.ToString() == viewItem.SubItems[1].Text);
+                    ProcessInfo matchProcess = processes.Find(x => x.ProcID.ToString() == viewItem.SubItems[1].Text);
 
                     if (matchProcess != null)
                     {
-                        if (matchProcess.status != viewItem.SubItems[2].Text)
-                            viewItem.SubItems[2].Text = matchProcess.status;
+                        if (matchProcess.Status != viewItem.SubItems[2].Text)
+                            viewItem.SubItems[2].Text = matchProcess.Status;
 
-                        if (matchProcess.memory.ToString() != viewItem.SubItems[3].Text)
-                            viewItem.SubItems[3].Text = matchProcess.memory.ToString();
+                        if (matchProcess.Memory.ToString() != viewItem.SubItems[3].Text)
+                            viewItem.SubItems[3].Text = matchProcess.Memory.ToString();
                     }
                     else
                     {
@@ -100,14 +112,14 @@ namespace ProcessList
                 if (listViewRunnProc.Items.Count < processes.Count)
                 {
                     List<int> listViewItems = listViewRunnProc.Items.Cast<ListViewItem>().Select(x => int.Parse(x.SubItems[1].Text)).ToList();
-                    var newProcesses = processes.Where(p => !listViewItems.Any(p2 => p2 == p.procID));
+                    var newProcesses = processes.Where(p => !listViewItems.Any(p2 => p2 == p.ProcID));
 
                     foreach (ProcessInfo item in newProcesses)
                     {
-                        ListViewItem listViewItem = new ListViewItem(item.name);
-                        listViewItem.SubItems.Add(item.procID.ToString());
-                        listViewItem.SubItems.Add(item.status.ToString());
-                        listViewItem.SubItems.Add(item.memory.ToString());
+                        ListViewItem listViewItem = new ListViewItem(item.Name);
+                        listViewItem.SubItems.Add(item.ProcID.ToString());
+                        listViewItem.SubItems.Add(item.Status.ToString());
+                        listViewItem.SubItems.Add(item.Memory.ToString());
                         listViewRunnProc.Items.Add(listViewItem);
 
                         labelTotalNr.Text = listViewRunnProc.Items.Count.ToString();
@@ -134,7 +146,8 @@ namespace ProcessList
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                else if (comboBoxKillProcess.SelectedItem == "PID")
+
+                if (comboBoxKillProcess.SelectedItem == "PID")
                 {
                     try
                     {
@@ -156,6 +169,67 @@ namespace ProcessList
             else
             {
                 MessageBox.Show("Please select on which criteria to kill the process!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            if (comboBoxExport.SelectedItem != null)
+            {
+                if (comboBoxExport.SelectedItem == "JSON")
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "JSON File|*.json";
+                    saveFileDialog.Title = "Save as JSON File";
+
+                    DialogResult result = saveFileDialog.ShowDialog();
+                        
+                    if (result == DialogResult.OK)
+                    {
+                        if (ExportList.ExportToJSON(ProcessInfo.GetProcessesInfo(), Path.GetFullPath(saveFileDialog.FileName)))
+                        {
+                            MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }           
+                }
+
+                if (comboBoxExport.SelectedItem == "XML")
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "XML File|*.xml";
+                    saveFileDialog.Title = "Save as XML File";
+
+                    DialogResult result = saveFileDialog.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        if (ExportList.ExportToXML(ProcessInfo.GetProcessesInfo(), Path.GetFullPath(saveFileDialog.FileName)))
+                        {
+                            MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+
+                if (comboBoxExport.SelectedItem == "CSV")
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "CSV File|*.csv";
+                    saveFileDialog.Title = "Save as CSV File";
+
+                    DialogResult result = saveFileDialog.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        if (ExportList.ExportToCSV(ProcessInfo.GetProcessesInfo(), Path.GetFullPath(saveFileDialog.FileName)))
+                        {
+                            MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                } 
+            }
+            else
+            {
+                MessageBox.Show("Please select a type of format to export!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
