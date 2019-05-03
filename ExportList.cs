@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
+using CsvHelper;
 
 namespace ProcessList
 {
@@ -18,23 +20,55 @@ namespace ProcessList
 
             try
             {
-                if (File.Exists(path + "\\ProcessList_JSON_export.json"))
-                {
-                    DialogResult overWrite = MessageBox.Show("File already exists. Do you want to overwrite it?", "Notify", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                File.WriteAllText(path, jsonObj);
+                result = true;                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-                    if (overWrite == DialogResult.Yes)
-                    {
-                        File.WriteAllText(path + "\\ProcessList_JSON_export.json", jsonObj);
-                        result = true;
-                    }
-                }
-                else
+            return result;
+        }
+
+        public static bool ExportToXML(List<ProcessInfo> processes, string path)
+        {
+            bool result = false;
+            XmlSerializer xmlWriter = new XmlSerializer(typeof(List<ProcessInfo>));
+
+            try
+            {
+                FileStream file = File.Create(path);
+                xmlWriter.Serialize(file, processes);
+                file.Close();
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return result;
+        }
+
+        public static bool ExportToCSV(List<ProcessInfo> processes, string path)
+        {
+            bool result = false;
+
+            try
+            {
+                using (var writer = new StreamWriter(path))
+                using (var csv = new CsvWriter(writer))
                 {
-                    File.WriteAllText(path + "\\ProcessList_JSON_export.json", jsonObj);
+                    csv.WriteRecords(processes);
+                    writer.Flush();
+                    writer.Close();
+
                     result = true;
                 }
             }
-            catch (Exception ex)
+            catch ( Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

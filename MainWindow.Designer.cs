@@ -181,7 +181,8 @@
             this.comboBoxExport.FormattingEnabled = true;
             this.comboBoxExport.Items.AddRange(new object[] {
             "XML",
-            "JSON"});
+            "JSON",
+            "CSV"});
             this.comboBoxExport.Location = new System.Drawing.Point(318, 13);
             this.comboBoxExport.Name = "comboBoxExport";
             this.comboBoxExport.Size = new System.Drawing.Size(65, 21);
