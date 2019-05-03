@@ -21,7 +21,7 @@ namespace ProcessList
                 if (File.Exists(path + "\\ProcessList_JSON_export.json"))
                 {
                     DialogResult overWrite = MessageBox.Show("File already exists. Do you want to overwrite it?", "Notify", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    
+
                     if (overWrite == DialogResult.Yes)
                     {
                         File.WriteAllText(path + "\\ProcessList_JSON_export.json", jsonObj);
@@ -31,7 +31,7 @@ namespace ProcessList
                 else
                 {
                     File.WriteAllText(path + "\\ProcessList_JSON_export.json", jsonObj);
-                    result = false;
+                    result = true;
                 }
             }
             catch (Exception ex)

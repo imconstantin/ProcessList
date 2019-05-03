@@ -82,6 +82,7 @@
             // 
             // buttonExport
             // 
+            this.buttonExport.Enabled = false;
             this.buttonExport.Location = new System.Drawing.Point(223, 12);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(75, 23);
@@ -124,6 +125,7 @@
             // comboBoxKillProcess
             // 
             this.comboBoxKillProcess.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxKillProcess.Enabled = false;
             this.comboBoxKillProcess.FormattingEnabled = true;
             this.comboBoxKillProcess.Items.AddRange(new object[] {
             "Name",
@@ -135,6 +137,7 @@
             // 
             // textBoxKillProcess
             // 
+            this.textBoxKillProcess.Enabled = false;
             this.textBoxKillProcess.Location = new System.Drawing.Point(12, 39);
             this.textBoxKillProcess.Name = "textBoxKillProcess";
             this.textBoxKillProcess.Size = new System.Drawing.Size(170, 20);
@@ -142,6 +145,7 @@
             // 
             // buttonKillProcess
             // 
+            this.buttonKillProcess.Enabled = false;
             this.buttonKillProcess.Location = new System.Drawing.Point(11, 12);
             this.buttonKillProcess.Name = "buttonKillProcess";
             this.buttonKillProcess.Size = new System.Drawing.Size(74, 23);
@@ -153,6 +157,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Enabled = false;
             this.label1.Location = new System.Drawing.Point(87, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(18, 13);
@@ -162,6 +167,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Enabled = false;
             this.label2.Location = new System.Drawing.Point(301, 18);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(16, 13);
@@ -171,6 +177,7 @@
             // comboBoxExport
             // 
             this.comboBoxExport.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxExport.Enabled = false;
             this.comboBoxExport.FormattingEnabled = true;
             this.comboBoxExport.Items.AddRange(new object[] {
             "XML",

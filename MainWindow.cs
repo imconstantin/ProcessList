@@ -26,32 +26,43 @@ namespace ProcessList
                 // Start second thread
                 Thread task = new Thread(AddProcInfoToList);
                 task.IsBackground = true;
-                task.Start();            
+                task.Start();
+
+                // Enable UI
+                buttonKillProcess.Enabled = true;
+                buttonExport.Enabled = true;
+                label1.Enabled = true;
+                label2.Enabled = true;
+                comboBoxExport.Enabled = true;
+                comboBoxKillProcess.Enabled = true;
+                textBoxKillProcess.Enabled = true;
             }
             else
             {
                 listViewRunnProc.Items.Clear();
-
                 labelTotal.Hide();
                 labelTotalNr.Hide();
+
+                // Disable UI
+                buttonKillProcess.Enabled = false;
+                buttonExport.Enabled = false;
+                label1.Enabled = false;
+                label2.Enabled = false;
+                comboBoxExport.Enabled = false;
+                comboBoxKillProcess.Enabled = false;
+                textBoxKillProcess.Enabled = false;
             }
         }
 
-        #region Loop at 1 sec and call the update method
+        // Loop at 1 sec and call the update method
         public void AddProcInfoToList()
         {
             while (checkBoxStart.Checked == true)
             {
-                InvokeUI(UpdateListViewProcc);
+                this.Invoke(new MethodInvoker(UpdateListViewProcc));
                 Thread.Sleep(1000);
             }
         }
-
-        private void InvokeUI(Action method)
-        {
-            this.Invoke(new MethodInvoker(method));
-        }
-        #endregion
 
         // Update the form with processes information
         public void UpdateListViewProcc()
