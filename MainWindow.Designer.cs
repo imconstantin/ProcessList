@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.listViewRunnProc = new System.Windows.Forms.ListView();
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnPID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -138,7 +139,7 @@
             // textBoxKillProcess
             // 
             this.textBoxKillProcess.Enabled = false;
-            this.textBoxKillProcess.Location = new System.Drawing.Point(12, 39);
+            this.textBoxKillProcess.Location = new System.Drawing.Point(12, 40);
             this.textBoxKillProcess.Name = "textBoxKillProcess";
             this.textBoxKillProcess.Size = new System.Drawing.Size(170, 20);
             this.textBoxKillProcess.TabIndex = 9;
@@ -204,6 +205,7 @@
             this.Controls.Add(this.checkBoxStart);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.listViewRunnProc);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "ProessList";
             this.ResumeLayout(false);
