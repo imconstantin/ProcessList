@@ -32,10 +32,10 @@ namespace ProcessList
         }
 
         // Returns a list of ProcessInfo type with all the system processes
-        public static List<ProcessInfo> GetProcessesInfo()
+        public static List<ProcessInfo> GetProcessesList(Process[] processes)
         {
             List<ProcessInfo> procList = new List<ProcessInfo>();
-            Process[] processes = Process.GetProcesses();
+ 
 
             foreach (var proc in processes)
             {

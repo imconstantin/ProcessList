@@ -68,7 +68,7 @@ namespace ProcessList
         // Update the form with processes information
         public void UpdateListViewProcc()
         {
-            List<ProcessInfo> processes = ProcessInfo.GetProcessesInfo();
+            List<ProcessInfo> processes = ProcessInfo.GetProcessesList(Process.GetProcesses());
   
             if (listViewRunnProc.Items.Count == 0)
             {
@@ -132,7 +132,7 @@ namespace ProcessList
         {
             if (comboBoxKillProcess.SelectedItem != null)
             {
-                if (comboBoxKillProcess.SelectedItem == "Name")
+                if (comboBoxKillProcess.SelectedItem.ToString() == "Name")
                 {
                     try
                     {
@@ -147,7 +147,7 @@ namespace ProcessList
                     }
                 }
 
-                if (comboBoxKillProcess.SelectedItem == "PID")
+                if (comboBoxKillProcess.SelectedItem.ToString() == "PID")
                 {
                     try
                     {
@@ -176,7 +176,7 @@ namespace ProcessList
         {
             if (comboBoxExport.SelectedItem != null)
             {
-                if (comboBoxExport.SelectedItem == "JSON")
+                if (comboBoxExport.SelectedItem.ToString() == "JSON")
                 {
                     SaveFileDialog saveFileDialog = new SaveFileDialog();
                     saveFileDialog.Filter = "JSON File|*.json";
@@ -186,14 +186,14 @@ namespace ProcessList
                         
                     if (result == DialogResult.OK)
                     {
-                        if (ExportList.ExportToJSON(ProcessInfo.GetProcessesInfo(), Path.GetFullPath(saveFileDialog.FileName)))
+                        if (ExportList.ExportToJSON(ProcessInfo.GetProcessesList(Process.GetProcesses()), Path.GetFullPath(saveFileDialog.FileName)))
                         {
                             MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }           
                 }
 
-                if (comboBoxExport.SelectedItem == "XML")
+                if (comboBoxExport.SelectedItem.ToString() == "XML")
                 {
                     SaveFileDialog saveFileDialog = new SaveFileDialog();
                     saveFileDialog.Filter = "XML File|*.xml";
@@ -203,14 +203,14 @@ namespace ProcessList
 
                     if (result == DialogResult.OK)
                     {
-                        if (ExportList.ExportToXML(ProcessInfo.GetProcessesInfo(), Path.GetFullPath(saveFileDialog.FileName)))
+                        if (ExportList.ExportToXML(ProcessInfo.GetProcessesList(Process.GetProcesses()), Path.GetFullPath(saveFileDialog.FileName)))
                         {
                             MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
 
-                if (comboBoxExport.SelectedItem == "CSV")
+                if (comboBoxExport.SelectedItem.ToString() == "CSV")
                 {
                     SaveFileDialog saveFileDialog = new SaveFileDialog();
                     saveFileDialog.Filter = "CSV File|*.csv";
@@ -220,7 +220,7 @@ namespace ProcessList
 
                     if (result == DialogResult.OK)
                     {
-                        if (ExportList.ExportToCSV(ProcessInfo.GetProcessesInfo(), Path.GetFullPath(saveFileDialog.FileName)))
+                        if (ExportList.ExportToCSV(ProcessInfo.GetProcessesList(Process.GetProcesses()), Path.GetFullPath(saveFileDialog.FileName)))
                         {
                             MessageBox.Show("List exported successfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
