@@ -136,10 +136,22 @@ namespace ProcessList
                 {
                     try
                     {
-                        foreach (Process proc in Process.GetProcessesByName(textBoxKillProcess.Text))
+                        Process[] processes = Process.GetProcessesByName(textBoxKillProcess.Text);
+
+                        if (processes.Count() > 0)
                         {
-                            proc.Kill();
+                            foreach (Process proc in processes)
+                            {
+                                proc.Kill();
+                            }
+
+                            MessageBox.Show("Successfully killed " + processes.Count().ToString() + " processes", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
+                        else
+                        {
+                            MessageBox.Show("Unable to find any processes by name: " + textBoxKillProcess.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        
                     }
                     catch (Exception ex)
                     {
@@ -151,15 +163,23 @@ namespace ProcessList
                 {
                     try
                     {
-                        foreach (Process proc in Process.GetProcesses())
+                        Process[] processes = Process.GetProcesses();
+
+                        for(int i=0; i<processes.Length; i++)
                         {
-                            if (proc.Id == int.Parse(textBoxKillProcess.Text))
+                            if (processes[i].Id == int.Parse(textBoxKillProcess.Text))
                             {
-                                proc.Kill();
+                                processes[i].Kill();
                                 break;
                             }
-                        }
+
+                            if (i == processes.Length - 1)
+                            {
+                                MessageBox.Show("Unable to find any processes by ID: " + textBoxKillProcess.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }                 
                     }
+
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
